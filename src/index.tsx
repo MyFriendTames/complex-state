@@ -3,11 +3,28 @@ import { useState } from 'react';
 export const useComplexState = < StateType, > ( defaultValue: StateType ) => {
   const [ state, setState ] = useState< StateType >( defaultValue );
   
-  const _setState = < PropertyType, > ( value: PropertyType | ( ( prev: PropertyType ) => void ), path: string = '' ) => isValidPath( path ) && setState( prev => buildState( prev, path, value ) );
+  const _setState = < PropertyType, > ( value: PropertyType | ( ( prev: PropertyType ) => void ), path: string = '' ) => {
+    if ( isValidPath( path ) ) setState( prev => buildState( prev, path, value ) );
+  };
   
-  const unset = ( path : string ) => isValidPath( path ) && setState( prev => buildState( prev, path, undefined, undefined, true ) );
+  const unset = ( path : string ) => {
+    if ( isValidPath( path ) ) setState( prev => buildState( prev, path, undefined, undefined, true ) );
+  };
   
-  return [ state, _setState, unset ];
+  const get = ( path: string ) => {
+    let tail = '';
+    if ( isValidPath( path ) ){
+      return path.split( '.' ).reduce( ( obj, key ) => {
+        if ( obj && typeof obj === 'object' ){
+          tail += tail ? `.${ key }` : key;
+          return obj[ key ];
+        }
+        throw new Error( `useComplexState: cannot read property '${ key }' of '${ obj == null ? obj : typeof obj }' in '${ tail }'` );
+      }, state );
+    }
+  };
+
+  return [ state, _setState, unset, get ];
 }
   
 const buildState = ( prev: any, path: string | string[], value: any, tail = '', unset = false ): any => {
