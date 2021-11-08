@@ -11,7 +11,7 @@ export const useComplexState = < StateType, > ( defaultValue: StateType ) => {
     if ( isValidPath( path ) ) setState( prev => buildState( prev, path, undefined, undefined, true ) );
   };
   
-  const get = ( path: string ) => {
+  const _get = ( path: string ) => {
     let tail = '';
     if ( isValidPath( path ) ){
       return path.split( '.' ).reduce( ( obj, key ) => {
@@ -24,7 +24,7 @@ export const useComplexState = < StateType, > ( defaultValue: StateType ) => {
     }
   };
 
-  return [ state, _setState, unset, get ];
+  return [ state, _setState, unset, _get ];
 }
   
 const buildState = ( prev: any, path: string | string[], value: any, tail = '', unset = false ): any => {
