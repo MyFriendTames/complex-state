@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const useComplexState = < StateType, > ( defaultValue: StateType ) => {
   const [ state, setState ] = useState< StateType >( defaultValue );
   
-  const _setState = < PropertyType, > ( path: string, value: PropertyType | ( ( prev: PropertyType ) => void ) ) => isValidPath( path ) && setState( prev => buildState( prev, path, value ) );
+  const _setState = < PropertyType, > ( value: PropertyType | ( ( prev: PropertyType ) => void ), path: string = '' ) => isValidPath( path ) && setState( prev => buildState( prev, path, value ) );
   
   const unset = ( path : string ) => isValidPath( path ) && setState( prev => buildState( prev, path, undefined, undefined, true ) );
   

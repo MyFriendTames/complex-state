@@ -1,1 +1,1 @@
-export declare const useComplexState: <StateType>(defaultValue: StateType) => (StateType | (<PropertyType>(path: string, value: PropertyType | ((prev: PropertyType) => void)) => false | void))[];
+export declare const useComplexState: <StateType>(defaultValue: StateType) => (StateType | (<PropertyType>(value: PropertyType | ((prev: PropertyType) => void), path?: string) => false | void) | ((path: string) => false | void))[];
