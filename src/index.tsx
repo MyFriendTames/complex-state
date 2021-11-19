@@ -28,7 +28,7 @@ export const useComplexState = < StateType, > ( defaultValue: StateType ) => {
 }
   
 const buildState = ( prev: any, path: string | string[], value: any, tail = '', unset = false ): any => {
-  if ( typeof path === 'string' ) path = ( path || '' ).split( '.' );
+  if ( typeof path === 'string' && path ) path = ( path || '' ).split( '.' );
   if ( !path.length ){
     return typeof value === 'function' ? value( prev ) : value;
   }else{
